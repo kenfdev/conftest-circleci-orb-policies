@@ -12,13 +12,13 @@ jobs:
   build:
     executor: machine
     steps:
+      - checkout
       - run:
           name: Dockerhub login
           command: docker login -u $DOCKER_USER -p $DOCKER_PASS
       - run:
           name: Run docker registry
           command: docker run -d --rm -p 5000:5000 -v $(pwd)/registry:/var/lib/registry --name registry registry:2
-      - checkout
       - conftest/install
       - conftest/push:
           repository: 127.0.0.1:5000/policies:latest
