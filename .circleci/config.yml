@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  conftest: kenfdev/conftest-orb@0.0.6
+  conftest: kenfdev/conftest-orb@dev:alpha
 
 executors:
   machine:
@@ -22,6 +22,7 @@ jobs:
       - conftest/install
       - conftest/push:
           repository: 127.0.0.1:5000/policies:latest
+          path: policy
       - run:
           name: Build docker image
           command: docker build -t kenfdev/circleci-orbs-policies:latest .
