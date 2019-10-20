@@ -1,0 +1,26 @@
+version: 2.1
+
+orbs:
+  conftest: kenfdev/conftest-orb@0.0.6
+
+executors:
+  machine:
+    machine:
+      image: ubuntu-1604:201903-01
+
+jobs:
+  build:
+    executor: machine
+    steps:
+      - run:
+          name: Dockerhub login
+          command: docker login -u $DOCKER_USER -p $DOCKER_PASS
+      - run:
+          name: Run docker registry
+          command: docker run -d --rm -p 5000:5000 --name registry registry:2
+      - checkout
+      - conftest/install
+      - conftest/push:
+          repository: 127.0.0.1:5000/policies:latest
+      - conftest/pull:
+          repository: 127.0.0.1:5000/policies:latest
